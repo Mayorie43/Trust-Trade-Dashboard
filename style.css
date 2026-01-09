@@ -15,8 +15,17 @@
 
 body{
   background:#f6f8fb;
-  padding-left:260px; /* FIX: space for sidebar on desktop */
 }
+
+/* Desktop layout wrapper effect */
+body.sidebar-open{
+  padding-left:260px;
+}
+
+body.sidebar-collapsed{
+  padding-left:80px;
+}
+
 
 /* ================= TOPBAR ================= */
 .topbar{
@@ -35,11 +44,11 @@ body{
 }
 
 /* HIDE HAMBURGER ON DESKTOP */
-@media (min-width: 769px){
+/* @media (min-width: 769px){
   #menuToggle{
     display:none;
   }
-}
+} */
 
 
 .topbar-left,
@@ -113,6 +122,46 @@ body{
   transition:transform .35s cubic-bezier(.4,0,.2,1);
 }
 
+
+
+
+
+.dashboard-main{
+  transition:margin .3s ease;
+}
+
+
+
+
+
+/* ================= DESKTOP SIDEBAR HIDE ================= */
+@media (min-width: 769px){
+
+  body{
+    padding-left:260px;
+    transition:padding .3s ease;
+  }
+
+  body.sidebar-hidden{
+    padding-left:0;
+  }
+
+  .dash-sidebar{
+    transform:translateX(0);
+    transition:transform .3s ease;
+  }
+
+  body.sidebar-hidden .dash-sidebar{
+    transform:translateX(-100%);
+  }
+}
+
+
+
+
+
+
+
 /* MENU */
 .dash-menu{
   height:100%;
@@ -165,10 +214,11 @@ body{
 }
 
 /* ================= MOBILE ================= */
+/* ================= MOBILE ================= */
 @media(max-width:768px){
 
   body{
-    padding-left:0; /* REMOVE SIDEBAR SPACE */
+    padding-left:0;
   }
 
   .dash-sidebar{
@@ -178,7 +228,37 @@ body{
   .dash-sidebar.open{
     transform:translateX(0);
   }
+
+  /* ===== TOPBAR MOBILE FIX (ADD THIS) ===== */
+  .topbar{
+    padding:0 12px;
+  }
+
+  .topbar-left{
+    min-width:0;
+    gap:12px;
+  }
+
+  .topbar-right{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-shrink:0;
+  }
+
+  .topbar-right .icon-btn{
+    width:36px;
+    height:36px;
+  }
+
+  .avatar{
+    width:34px;
+    height:34px;
+    font-size:13px;
+    flex-shrink:0;
+  }
 }
+
 
 /* END OF TOP BAR AND SIDE BAR */
 
@@ -662,11 +742,6 @@ background: linear-gradient(135deg, #3b82f6, #1e3a8a);
   }
 }
 
-
-
-
-
-
 /* end of 2rd dashboard */
 
 
@@ -675,3 +750,148 @@ background: linear-gradient(135deg, #3b82f6, #1e3a8a);
 
 
 
+
+
+
+
+/* ================= BALANCE OVERVIEW ================= */
+
+.balance-page{
+  width:100%;
+}
+
+/* HEADER */
+.bo-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:24px;
+}
+
+.bo-title{
+  font-size:24px;
+  font-weight:700;
+  color:#0f172a;
+}
+
+.bo-visibility{
+  background:#ffffff;
+  border:1px solid #e5e7eb;
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.bo-visibility img{
+  width:18px;
+}
+
+/* GRID */
+.bo-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+
+/* CARD */
+.bo-card{
+  background:#ffffff;
+  padding:22px;
+  border-radius:16px;
+  box-shadow:0 6px 16px rgba(0,0,0,.06);
+  display:flex;
+  gap:16px;
+  align-items:flex-start;
+}
+
+.bo-card.bo-main{
+  background:linear-gradient(135deg,#3b82f6,#1e3a8a);
+  color:#ffffff;
+}
+
+.bo-card.bo-main .bo-label,
+.bo-card.bo-main .bo-amount{
+  color:#ffffff;
+}
+
+/* ICON */
+.bo-icon{
+  width:48px;
+  height:48px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.15);
+}
+
+.bo-icon img{
+  width:24px;
+}
+
+/* TEXT */
+.bo-label{
+  font-size:14px;
+  font-weight:600;
+  color:#64748b;
+}
+
+.bo-amount{
+  font-size:22px;
+  font-weight:700;
+  margin-top:6px;
+}
+
+.bo-muted{
+  font-size:12px;
+  color:#94a3b8;
+}
+
+.bo-positive{
+  font-size:12px;
+  font-weight:600;
+  color:#16a34a;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .bo-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+
+
+
+/* for balance overview  eye  */
+
+
+
+/* ===== BALANCE OVERVIEW EYE BUTTON (PRO STYLE) ===== */
+
+.bo-visibility {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: #ffffff;          /* white round background */
+  border-radius: 50%;           /* circle */
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.bo-visibility img {
+  width: 20px;
+  height: 20px;
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  filter: brightness(0) saturate(0) opacity(0.7); /* grey eye */
+  pointer-events: none;
+}
