@@ -7,22 +7,33 @@
   <title>Dashboard</title>
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <!-- FAVICON -->
-   <link rel="icon" href="favicon.ico">
-
-<link rel="icon" type="image/x-icon" href="images/favicon.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-
-<!-- APPLE / IOS -->
-<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-
-<!-- ANDROID / PWA -->
-<link rel="manifest" href="images/site.webmanifest">
-
 </head>
 
 <body>
+
+
+  <!-- script for balance overview eye -->
+<script>
+  let balanceOverviewHidden = false;
+
+  function toggleBalanceOverview() {
+    const balances = document.querySelectorAll('.bo-val');
+
+    balances.forEach(el => {
+      // Save original value once
+      if (!el.dataset.original) {
+        el.dataset.original = el.textContent.trim();
+      }
+
+      el.textContent = balanceOverviewHidden
+        ? el.dataset.original
+        : '••••••••';
+    });
+
+    balanceOverviewHidden = !balanceOverviewHidden;
+  }
+</script>
+
 
   <!-- ================= TOP NAVBAR ================= -->
 <header class="topbar" data-aos="fade-down">
@@ -465,29 +476,100 @@
 
   </main>
 
-  <script>
-    const dashboardPage = document.getElementById('dashboardPage');
 
-    document.querySelectorAll('.dash-item').forEach(item => {
-      item.addEventListener('click', (e) => {
-        e.preventDefault();
 
-        const text = item.textContent.trim();
 
-        // Hide dashboard by default
-        dashboardPage.style.display = 'none';
 
-        // Show dashboard only when Dashboard is clicked
-        if (text === 'Dashboard') {
-          dashboardPage.style.display = 'block';
-        }
+  <!-- ================= BALANCE OVERVIEW PAGE ================= -->
+<main class="dashboard-main balance-page" id="balancePage" style="display:none;">
 
-        // Active state (already in your code, kept safe)
-        document.querySelectorAll('.dash-item').forEach(i => i.classList.remove('active'));
-        item.classList.add('active');
-      });
+  <!-- HEADER -->
+  <div class="bo-head">
+    <h2 class="bo-title">Balance Overview</h2>
+
+    <!-- Eye toggle -->
+    <button class="bo-visibility" onclick="toggleBalanceOverview()">
+      <img src="images/eyes.png" alt="Toggle balance visibility">
+    </button>
+  </div>
+
+  <!-- GRID -->
+  <section class="bo-grid">
+
+    <!-- AVAILABLE BALANCE -->
+    <div class="bo-card bo-main">
+      <div class="bo-icon">
+        <img src="images/wallet4.png" alt="">
+      </div>
+      <div>
+        <div class="bo-label">Available Balance</div>
+        <div class="bo-amount bo-val">$45,678.90</div>
+      </div>
+    </div>
+
+    <!-- LOCKED BALANCE -->
+    <div class="bo-card">
+      <div class="bo-icon">
+        <img src="images/lock.png" alt="">
+      </div>
+      <div>
+        <div class="bo-label">Locked Balance</div>
+        <div class="bo-amount bo-val">$12,450.00</div>
+        <div class="bo-muted">In active investments</div>
+      </div>
+    </div>
+
+    <!-- TOTAL EARNINGS -->
+    <div class="bo-card">
+      <div class="bo-icon">
+        <img src="images/graph.png" alt="">
+      </div>
+      <div>
+        <div class="bo-label">Total Earnings</div>
+        <div class="bo-amount bo-val">$8,234.56</div>
+        <div class="bo-positive">↑ +18.2% this month</div>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+<!-- ================= END BALANCE OVERVIEW ================= -->
+
+
+
+<!-- aos script for balance over view -->
+
+
+ <script>
+  const dashboardPage = document.getElementById('dashboardPage');
+  const balancePage = document.getElementById('balancePage');
+
+  document.querySelectorAll('.dash-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      const text = item.textContent.trim();
+
+      // Hide all pages first
+      dashboardPage.style.display = 'none';
+      balancePage.style.display = 'none';
+
+      if (text === 'Dashboard') {
+        dashboardPage.style.display = 'block';
+      }
+
+      if (text === 'Balance') {
+        balancePage.style.display = 'block';
+      }
+
+      // Active state
+      document.querySelectorAll('.dash-item').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
     });
-  </script>
+  });
+</script>
+
 
 
 
@@ -521,27 +603,38 @@
 
 
 
+<!-- script for top bar and side bar -->
+<script>
+  const toggle = document.getElementById('menuToggle');
+  const sidebar = document.getElementById('sidebar');
 
+  toggle.addEventListener('click', () => {
 
-
-  <!-- script for top bar and  side bar -->
-  <script>
-    const toggle = document.getElementById('menuToggle');
-    const sidebar = document.getElementById('sidebar');
-
-    toggle.addEventListener('click', () => {
+    /* ========= MOBILE ========= */
+    if (window.innerWidth <= 768) {
       sidebar.classList.toggle('open');
-    });
+      return;
+    }
 
-    document.querySelectorAll('.dash-item').forEach(item => {
-      item.addEventListener('click', () => {
-        document.querySelectorAll('.dash-item').forEach(i => i.classList.remove('active'));
-        item.classList.add('active');
-      });
-    });
-  </script>
+    /* ========= DESKTOP ========= */
+    document.body.classList.toggle('sidebar-hidden');
+  });
 
-  <!-- end of script for the bar side  -->
+  /* Default desktop state */
+  if (window.innerWidth > 768) {
+    document.body.classList.remove('sidebar-hidden');
+  }
+
+  /* Active menu item (KEEP) */
+  document.querySelectorAll('.dash-item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.dash-item').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+    });
+  });
+</script>
+<!-- end of script for the bar side -->
+
 
 
 
@@ -562,4 +655,3 @@
 </body>
 
 </html>
-
